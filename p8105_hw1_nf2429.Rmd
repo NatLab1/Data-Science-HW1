@@ -1,7 +1,7 @@
 ---
 title: "p8105_hw1_nf2429"
 author: "Nathalie Fadel"
-date: "9/19/2018"
+date: "9/20/2018"
 output: html_document
 ---
 
@@ -19,20 +19,33 @@ Problem1_df = tibble(
   vec_char = c("Carbon", "Hydrogen", "Nitrogen", "Helium", "Phosphorus", "Iodine", "Cesium", "Aluminum", "Oxygen", "Radium"),
   vec_factor = factor(c("Nonmetal", "Nonmetal", "Nonmetal", "Noble Gas", "Nonmetal", "Halogen", "Alkali Metal", "Post-transition metal", "Nonmetal", "Alkaline Earth Metal"))
 ) 
-mean(Problem1_df$x) #this works
-mean(Problem1_df$vec_logical) #this also works
-mean(Problem1_df$vec_char) #this doesn't work - got 'NA' output because it's a character variable, not a numeric one
-mean(Problem1_df$vec_factor) #same thing here
+```
 
-as.numeric(Problem1_df$vec_logical) #spits out 1s and 0s for true and false
-as.numeric(Problem1_df$vec_char) #10 "NA"s
-as.numeric(Problem1_df$vec_factor) #assigned categories 1-6 to each label in alphabetical order
+##Calculating Means
+```{r}
+mean(Problem1_df$x) 
+mean(Problem1_df$vec_logical) 
+mean(Problem1_df$vec_char) 
+mean(Problem1_df$vec_factor) 
+```
+When we take the mean of variables x and vec_logical, we get actual numbers, since these variables are numeric. However, for vec_char and vec_factor, we get "NA"s for the outputs since the mean function does not work on character variables. 
 
+##Numeric conversion
+```{r}
+as.numeric(Problem1_df$vec_logical) 
+as.numeric(Problem1_df$vec_char) 
+as.numeric(Problem1_df$vec_factor) 
+```
+This function on vec_logical outputs 1s and 0s to signify True and False. On the vec_character variable, we get "NA"s. On the vec_factor variable, the function assigned numbers 1-6 in alphabetical order to each of the categories.
+
+##Other types of conversions
+```{r}
 as.factor(Problem1_df$vec_char)
 as.numeric(as.factor(Problem1_df$vec_char))
 as.character(Problem1_df$vec_factor)
-as.numeric(as.character(Problem1_df$vec_factor)) #output gives NAs because it's a character vector
+as.numeric(as.character(Problem1_df$vec_factor))  
 ```
+The output for the as.factor function on a character vector gives each of the 10 levels. When we put this function inside of the as.numeric function, it outputs numbers 1-10 that it has assigned to each of the levels in alphabetical order. The as.character function on the factor vector gives the categories for all 10 levels. When we try to convert from a character vector to numeric, the output gives "NA"s.
 
 #Problem 2
 ```{r}
@@ -41,20 +54,36 @@ Problem2_df = tibble(
   x = rnorm(1000),
   y = rnorm(1000),
   z = (x + y > 0),
-z_num = as.numeric(z), #outputs 1s and 0s as True and False
-z_fac = as.factor(z) #outputs the True and False as characters
-)
-```
+z_num = as.numeric(z), 
+z_fac = as.factor(z) 
+)  
+```  
+The as.numeric function on the z logic vector outputs 1s and 0s to signify True and False, whereas the as.factor function on the z vector outputs True and False as characters.
 
-The dataframe contains `r nrow(Problem2_df)` observations. The mean of x is `r mean(Problem2_df$x)`. The median of x is `r median(Problem2_df$x)`. The proportion of TRUE cases is `r mean(Problem2_df$z)`. 
+This dataframe contains `r nrow(Problem2_df)` observations. The mean of x is `r mean(Problem2_df$x)`, and the median of x is `r median(Problem2_df$x)`. The proportion of TRUE cases is `r mean(Problem2_df$z)`. 
+
+##Plots
+```{r}
+problem2_plot1 <- ggplot(Problem2_df, aes(x=x, y=y, colour=z)) + geom_point()  
+ggsave("problem2_plot1.pdf", plot = problem2_plot1, height = 4, width = 6)   
+
+problem2_plot1  
+```  
+
+The cases are defined by the logic vector, z, which determines which values satisfy the inequality (True, pictured in blue), and which ones do not (False, pictured in red).
 
 ```{r}
-problem2_plot1 <- ggplot(Problem2_df, aes(x=x, y=y, colour=z)) + geom_point() #pink and teal dots
-ggsave("problem2_plot1.pdf", plot = problem2_plot1, height = 4, width = 6) 
-problem2_plot1
+plot2 <- ggplot(Problem2_df, aes(x=x, y=y, colour=z_num)) + geom_point() 
+plot2
+```  
 
-ggplot(Problem2_df, aes(x=x, y=y, colour=z_num)) + geom_point() #blue color scale
-ggplot(Problem2_df, aes(x=x, y=y, colour=z_fac)) + geom_point() #same as first plot
-```
+The color mapping of a continous variable, which is signaled by the numeric vector, prompts the color scale to appear next to the plot. However, since the output values are only 1 and 0 for True and False, the only colors that display on this plot are the two extremes of the spectrum, pale blue and dark blue.
+
+```{r}
+plot3 <- ggplot(Problem2_df, aes(x=x, y=y, colour=z_fac)) + geom_point()
+plot3
+```  
+
+The factor vector of z outputs the values in the same form as shown in plot 1 (True and False).
 
 
