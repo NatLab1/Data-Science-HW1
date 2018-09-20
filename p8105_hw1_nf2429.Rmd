@@ -87,3 +87,5 @@ plot3
 The factor vector of z outputs the values in the same form as shown in plot 1 (True and False).
 
 
+
+
