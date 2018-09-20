@@ -49,7 +49,10 @@ z_fac = as.factor(z) #outputs the True and False as characters
 The dataframe contains `r nrow(Problem2_df)` observations. The mean of x is `r mean(Problem2_df$x)`. The median of x is `r median(Problem2_df$x)`. The proportion of TRUE cases is `r mean(Problem2_df$z)`. 
 
 ```{r}
-ggplot(Problem2_df, aes(x=x, y=y, colour=z)) + geom_point() #pink and teal dots
+problem2_plot1 <- ggplot(Problem2_df, aes(x=x, y=y, colour=z)) + geom_point() #pink and teal dots
+ggsave("problem2_plot1.pdf", plot = problem2_plot1, height = 4, width = 6) 
+problem2_plot1
+
 ggplot(Problem2_df, aes(x=x, y=y, colour=z_num)) + geom_point() #blue color scale
 ggplot(Problem2_df, aes(x=x, y=y, colour=z_fac)) + geom_point() #same as first plot
 ```
